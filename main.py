@@ -18,7 +18,10 @@ class Blog(db.Model):
     def __init__(self, title, body):
         self.title = title
         self.body = body
-        
+
+@app.route ('/')
+def home_page():
+        return redirect('/newpost')
 
 
 @app.route('/newpost', methods=['POST', 'GET'])
@@ -39,7 +42,7 @@ def index():
         new_blog = Blog(title, body)
         db.session.add(new_blog)
         db.session.commit()
-        return redirect('/blog?id={}'.format(new_blog.id))
+        return redirect(f'/blog?id={new_blog.id}')
         
 
     return render_template('blog_add.html')
@@ -62,4 +65,5 @@ def blog_list():
 
 
 if __name__ == '__main__':
+    db.create_all()
     app.run()
